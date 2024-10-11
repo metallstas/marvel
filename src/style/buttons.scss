@@ -1,0 +1,30 @@
+@import './variables.scss';
+
+.btn {
+    display: block;
+    min-width: 110px;
+    min-height: 38px;
+    font-size: 14px;
+    font-weight: 400;
+    padding: 11px 18px;
+    border: none;
+    text-transform: uppercase;
+    color: #fff;
+    cursor: pointer;
+    clip-path: polygon(
+      0% 10px,
+      10px 0,
+      100% 0,
+      100% calc(100% - 10px),
+      calc(100% - 10px) 100%,
+        0 100%
+    );
+    &-second {
+        background-color: $grey;
+    }
+    &-main {
+        background-color: $darkRed;
+    }
+}
+  
+  

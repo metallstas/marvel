@@ -1,0 +1,14 @@
+@import '../../style/variables.scss';
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    h1, p {
+        font-size: 28px;
+        font-weight: 700;
+    }
+    a.active {
+        color: $darkRed;
+    }
+}
+
