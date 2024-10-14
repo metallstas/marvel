@@ -1,0 +1,37 @@
+@import '../../style/variables.scss';
+
+.characters {
+    display: grid;
+    grid-template-columns: repeat(3, 208px);
+    grid-template-rows: repeat(3, 318px);
+    gap: 25px;
+
+    &__card {
+        //min-height: 318px;
+        //width: 208px;
+    
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        &-active {
+            box-shadow: 0px 5px 20px $darkRed;
+            transform: translateY(-10px);
+        }
+        p {
+            font-size: 22px;
+            line-height: 25px;
+            padding: 15px;
+            background-color: $dark;
+            color: #fff;
+            height: 118px;
+        }
+
+        img {
+            width: 100%;
+        }
+    }
+
+       
+    
+    
+}
