@@ -1,8 +1,10 @@
 import Header from '../header/Header'
 import RandomChar from '../randomChar/RandomChar'
 import Characters from '../characters/Characters'
+import CharacterInfo from '../characterInfo/CharacterInfo'
 
 import './app.scss'
+import '../../style/buttons.scss'
 
 const App = () => {
     return (
@@ -11,7 +13,7 @@ const App = () => {
             <RandomChar/>
             <section className='main-section'>
                 <Characters/>
-
+                <CharacterInfo/>
             </section>
         </div>
     )

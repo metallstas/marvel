@@ -1,9 +1,11 @@
 import './characters.scss'
+import '../../style/buttons.scss'
 
 import images from '../../resourses/img/535feab462a64 1.jpg'
 
 const Characters = () => {
     return (
+        <div className='wrapper'>
         <div className='characters'>
             <div className="characters__card">
                 <img src={images} alt="character" />
@@ -67,6 +69,9 @@ const Characters = () => {
                     Name
                 </p>
             </div>
+        </div>
+        <button className='btn btn-long'>Load More</button>
+        {/* <button className='btn btn-long'>Load More</button> */}
         </div>
     )
 }
