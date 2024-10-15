@@ -11,6 +11,7 @@
     text-transform: uppercase;
     color: #fff;
     cursor: pointer;
+    transition: all .3s;
     clip-path: polygon(
       0% 10px,
       10px 0,
@@ -19,6 +20,9 @@
       calc(100% - 10px) 100%,
         0 100%
     );
+    &:hover {
+        transform: translateY(-3px);
+    }
     &-second {
         background-color: $grey;
     }
