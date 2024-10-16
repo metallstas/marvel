@@ -10,33 +10,38 @@ import shield from '../../resourses/img/shield.png'
 class RandomChar extends Component {
     constructor(props) {
         super()
-        this.updateChar()
+        //this.updateChar()
     }
 
     state = {
-        name: null,
-        description: null,
-        thumbnail: null,
-        homepage: null,
-        wiki: null,
+        char: {},
     }
 
     service = new Service()
 
+    onCharLoaded = (char) => {
+        this.setState({char})
+    }
+
     updateChar = () => {
         const id = Math.floor(Math.random() * (1011400 - 1011000) + 1011000)
         this.service
-            .getAllChracters()
-            .then(res => console.log(res))
-            // .getChracterById(id)
-            // .then(res => {
-            //     this.setState(res)
-            // })
+            .getChracterById(id)
+            .then(this.onCharLoaded)
+    }
+
+    showDescr = (descr) => {
+        if (!descr) {
+            return 'There is no description for this hero'
+        }
+        if (descr.length >= 215) {
+            return descr.slice(0, 215) + '...'
+        }
     }
 
     render () {
-        const {name, description,thumbnail, homepage, wiki} = this.state
-
+        const {char: {name, description,thumbnail, homepage, wiki}} = this.state
+    
         return (
             <div className="random-char">
                 <div className="random-char__block">
@@ -44,9 +49,11 @@ class RandomChar extends Component {
                         <img src={thumbnail} alt="char" />
                     </div>
                     <div className="random-char__descr">
-                        <h2>{name}</h2>
-                        <p>{!description ? 'There is no description for this hero' : description}</p>
                         <div>
+                            <h2>{name}</h2>
+                            <p>{this.showDescr(description)} </p>
+                        </div>
+                        <div className='random-char__btn-block'>
                             <a href={homepage}>
                                 <button className='btn btn-main'>homepage</button>
                             </a>

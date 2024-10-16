@@ -38,11 +38,16 @@
             font-weight: 400;
             line-height: 16px;
         }
-        div {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 13px;
-        }
+        
+    }
+
+    &__btn-block {
+    
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 13px;
+        
     }
     &__try {
         position: relative;
