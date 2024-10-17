@@ -10,10 +10,6 @@ import hammer from '../../resourses/img/mjolnir.png'
 import shield from '../../resourses/img/shield.png'
 
 class RandomChar extends Component {
-    constructor(props) {
-        super()
-        this.updateChar()
-    }
 
     state = {
         char: {},
@@ -23,6 +19,10 @@ class RandomChar extends Component {
 
     service = new Service()
 
+    componentDidMount() {
+        this.updateChar()
+    }
+
     onCharLoaded = (char) => {
         this.setState({
             char,
@@ -31,7 +31,6 @@ class RandomChar extends Component {
     }
 
     onError = (error) => {
-        console.log(error)
         this.setState({
             loading: false,
             error: true,
@@ -41,7 +40,7 @@ class RandomChar extends Component {
     updateChar = () => {
         const id = Math.floor(Math.random() * (1011400 - 1011000) + 1011000)
         this.service
-            .getChracterById(13)
+            .getChracterById(id)
             .then(this.onCharLoaded)
             .catch(this.onError)
     }
