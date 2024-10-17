@@ -30,7 +30,7 @@ class RandomChar extends Component {
         })
     }
 
-    onError = (error) => {
+    onError = () => {
         this.setState({
             loading: false,
             error: true,
@@ -43,6 +43,11 @@ class RandomChar extends Component {
             .getChracterById(id)
             .then(this.onCharLoaded)
             .catch(this.onError)
+    }
+
+    onChangeRandomChar = () => {
+        this.setState({loading: true})
+        this.updateChar()
     }
 
     render () {
@@ -66,7 +71,7 @@ class RandomChar extends Component {
                         <p>Random character for today!<br/> Do you want to get to know him better?</p>
                         <span>Or choose another one</span>
                     </div>
-                    <button className="btn btn-second">try it</button>
+                    <button onClick={this.onChangeRandomChar} className="btn btn-second">try it</button>
                 </div>
             </div>
         )
