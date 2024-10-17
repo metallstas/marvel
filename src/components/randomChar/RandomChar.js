@@ -24,6 +24,7 @@ class RandomChar extends Component {
     }
 
     onCharLoaded = (char) => {
+        console.log(char)
         this.setState({
             char,
             loading: false,
@@ -88,6 +89,7 @@ const View = ({char}) => {
         if (descr.length >= 215) {
             return descr.slice(0, 215) + '...'
         }
+        return descr
     }
 
     return (

@@ -1,79 +1,74 @@
+import { Component } from 'react'
+
+import Service from '../../services/Service'
+
 import './characters.scss'
 import '../../style/buttons.scss'
 
-import images from '../../resourses/img/535feab462a64 1.jpg'
+class Characters extends Component {
 
-const Characters = () => {
-    return (
-        <div className='wrapper'>
-        <div className='characters'>
-            <div className="characters__card">
-                <img src={images} alt="character" />
-                <p>
-                    Name
-                </p>
-            </div>
+    state = {
+        characters: [],
+        loading: true,
+    }
 
-            <div className="characters__card characters__card-active">
-                <img src={images} alt="character" />
-                <p>
-                    Name
-                </p>
-            </div>
+    service = new Service()
 
-            <div className="characters__card">
-                <img src={images} alt="character" />
-                <p>
-                    Name
-                </p>
-            </div>
 
-            <div className="characters__card">
-                <img src={images} alt="character" />
-                <p>
-                    Name
-                </p>
-            </div>
+    onCharAllLoaded = (characters) => {
+        this.setState({
+            characters,
+            loading: false,
+        })
+    }
 
-            <div className="characters__card">
-                <img src={images} alt="character" />
-                <p>
-                    Name
-                </p>
-            </div>
+    componentDidMount() {
+        this.service
+            .getAllChracters()
+            .then(this.onCharAllLoaded)
+    }
 
-            <div className="characters__card">
-                <img src={images} alt="character" />
-                <p>
-                    Name
-                </p>
-            </div>
+    findString = (string, substring) => {
+        const index = string.indexOf(substring)
+        if (index !== -1) {
+            return 'characters__card__img characters__card__img-not'
+        }
+        return 'characters__card__img'
+    }
 
-            <div className="characters__card">
-                <img src={images} alt="character" />
-                <p>
-                    Name
-                </p>
-            </div>
+    showCharacters = () => {
+        console.log(this.state)
+        const elements = this.state.characters.map(({name, thumbnail}) => {
+            const idKey = Math.floor(Math.random() * 10000000)
+            const imgClass = this.findString(thumbnail, 'image_not_available.jpg')
+            return (
+                <div className="characters__card" key={idKey}>
+                    <img 
+                        className={imgClass} 
+                        src={thumbnail} 
+                        alt="character"/>
+                    <p>{name}</p>
+                </div>
+            )
+        })
 
-            <div className="characters__card">
-                <img src={images} alt="character" />
-                <p>
-                    Name
-                </p>
-            </div>
+        return elements
+    }
 
-            <div className="characters__card">
-                <img src={images} alt="character" />
-                <p>
-                    Name
-                </p>
+    render () {
+        const charElements = this.showCharacters()
+        // image_not_available.jpg
+
+        return (
+            <div className='wrapper'>
+                <div className='characters'>
+                    {charElements}
+                </div>
+                <button className='btn btn-long'>Load More</button>
             </div>
-        </div>
-        <button className='btn btn-long'>Load More</button>
-        {/* <button className='btn btn-long'>Load More</button> */}
-        </div>
-    )
+        )
+    }
+    
 }
 
 export default Characters
