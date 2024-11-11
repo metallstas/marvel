@@ -21,6 +21,7 @@
         display: flex;
         flex-direction: column;
         justify-content: space-between;
+        cursor: pointer;
         &-active {
             box-shadow: 0px 5px 20px $darkRed;
             transform: translateY(-10px);

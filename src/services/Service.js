@@ -1,6 +1,3 @@
-
-const allChar = 'https://gateway.marvel.com:443/v1/public/characters?limit=9&offset=210&apikey=3797e9674253bb091b4eb9be248331d7'
-
 class Service {
     
     _apiBase = 'https://gateway.marvel.com:443/v1/public/'
@@ -33,7 +30,8 @@ class Service {
             thumbnail: char.thumbnail.path + '.' + char.thumbnail.extension,
             homepage: char.urls[0].url,
             wiki: char.urls[1].url,
-        
+            id: char.id,
+            comics: char.comics.items
         }
     }
 }

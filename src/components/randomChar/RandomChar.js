@@ -40,15 +40,15 @@ class RandomChar extends Component {
 
     updateChar = () => {
         const id = Math.floor(Math.random() * (1011400 - 1011000) + 1011000)
+        this.onLoadingChar()
         this.service
             .getChracterById(id)
             .then(this.onCharLoaded)
             .catch(this.onError)
     }
 
-    onChangeRandomChar = () => {
+    onLoadingChar = () => {
         this.setState({loading: true})
-        this.updateChar()
     }
 
     render () {
@@ -72,7 +72,7 @@ class RandomChar extends Component {
                         <p>Random character for today!<br/> Do you want to get to know him better?</p>
                         <span>Or choose another one</span>
                     </div>
-                    <button onClick={this.onChangeRandomChar} className="btn btn-second">try it</button>
+                    <button onClick={this.updateChar} className="btn btn-second">try it</button>
                 </div>
             </div>
         )

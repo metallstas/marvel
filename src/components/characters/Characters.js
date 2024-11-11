@@ -1,6 +1,6 @@
 import { Component } from 'react'
-
 import Service from '../../services/Service'
+import Spinner from '../spinner/Spinner'
 
 import './characters.scss'
 import '../../style/buttons.scss'
@@ -37,18 +37,19 @@ class Characters extends Component {
     }
 
     showCharacters = () => {
-        console.log(this.state)
-        const elements = this.state.characters.map(({name, thumbnail}) => {
-            const idKey = Math.floor(Math.random() * 10000000)
+        const elements = this.state.characters.map(({name, thumbnail, id}) => {
             const imgClass = this.findString(thumbnail, 'image_not_available.jpg')
             return (
-                <div className="characters__card" key={idKey}>
+                <li 
+                    className="characters__card" 
+                    key={id}
+                    onClick={() => this.props.onCharSelected(id)}>
                     <img 
                         className={imgClass} 
                         src={thumbnail} 
                         alt="character"/>
                     <p>{name}</p>
-                </div>
+                </li>
             )
         })
 
@@ -56,14 +57,15 @@ class Characters extends Component {
     }
 
     render () {
-        const charElements = this.showCharacters()
-        // image_not_available.jpg
+        const spinner = this.state.loading ? <Spinner /> : null
+        const charElements = this.state.loading ? null : this.showCharacters()
 
         return (
             <div className='wrapper'>
-                <div className='characters'>
+                {spinner}
+                <ul className='characters'>
                     {charElements}
-                </div>
+                </ul>
                 <button className='btn btn-long'>Load More</button>
             </div>
         )
