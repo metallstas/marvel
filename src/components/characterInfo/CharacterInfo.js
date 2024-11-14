@@ -38,9 +38,6 @@ class CharacterInfo extends Component {
             .getChracterById(charId)
             .then(this.onCharLoaded)
             .catch(this.onError)
-        
-        this.foo.bar = 0
-
     }
 
     onCharLoaded = (char) => {
@@ -89,9 +86,6 @@ const View = ({char}) => {
 
         return comics.map((el, i) => {
             if(i > 10) {
-                if (i === comics.length - 2) {
-                    return <p>...</p>
-                }
                 return
             }
             

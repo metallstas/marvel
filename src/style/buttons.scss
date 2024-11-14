@@ -34,6 +34,9 @@
         min-width: 170px;
         background-color: $darkRed;
     }
+    &:disabled {
+        filter: grayscale(50%)
+    }
 }
   
   

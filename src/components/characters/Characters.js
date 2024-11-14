@@ -10,22 +10,51 @@ class Characters extends Component {
     state = {
         characters: [],
         loading: true,
+        error: false,
+        newItemLoading: false,
+        offset: 210,
+        charEnded: false, 
     }
 
     service = new Service()
 
-
-    onCharAllLoaded = (characters) => {
+    onError = () => {
         this.setState({
-            characters,
-            loading: false,
+            error: true
         })
     }
 
-    componentDidMount() {
-        this.service
-            .getAllChracters()
+    onCharAllLoaded = (characters) => {
+        let ended = false
+        if (characters.length < 9) {
+            ended = true
+        }
+
+        this.setState((prevState) => ({
+                characters: [...prevState.characters, ...characters],
+                loading: false,
+                newItemLoading: false,
+                offset: prevState.offset + 9,
+                charEnded: ended
+            })
+        )
+    }
+
+    onCharListLoading = () => {
+        this.setState({
+            newItemLoading: true,
+        })
+    }
+
+    onRequest = (offset) => {
+        this.onCharListLoading()
+        this.service.getAllChracters(offset)
             .then(this.onCharAllLoaded)
+            .catch(this.onError)
+    }
+
+    componentDidMount() {
+        this.onRequest()
     }
 
     findString = (string, substring) => {
@@ -57,8 +86,9 @@ class Characters extends Component {
     }
 
     render () {
-        const spinner = this.state.loading ? <Spinner /> : null
-        const charElements = this.state.loading ? null : this.showCharacters()
+        const {loading, offset, newItemLoading, charEnded} = this.state
+        const spinner = loading ? <Spinner /> : null
+        const charElements = loading ? null : this.showCharacters()
 
         return (
             <div className='wrapper'>
@@ -66,7 +96,14 @@ class Characters extends Component {
                 <ul className='characters'>
                     {charElements}
                 </ul>
-                <button className='btn btn-long'>Load More</button>
+                <button 
+                    disabled={newItemLoading}
+                    onClick={() => this.onRequest(offset)}
+                    style={{'display': charEnded ? 'none' : 'block'}}
+                    className='btn btn-long'
+                    >
+                    Load More
+                </button>
             </div>
         )
     }

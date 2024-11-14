@@ -7,6 +7,7 @@ import CharacterInfo from '../characterInfo/CharacterInfo'
 import './app.scss'
 import '../../style/buttons.scss'
 import bg from '../../resourses/img/bg1.png'
+import ErrorBoundary from '../errorBoundary/ErrorBoundary'
 
 class App extends Component {
     state = {
@@ -23,10 +24,16 @@ class App extends Component {
         return (
             <div className="app">
                 <Header/>
-                <RandomChar/>
+                <ErrorBoundary>
+                    <RandomChar/>
+                </ErrorBoundary>
                 <main className='app__main'>
-                    <Characters onCharSelected={this.onCharSelected} />
-                    <CharacterInfo charId={this.state.selectedChar} />
+                    <ErrorBoundary>
+                        <Characters onCharSelected={this.onCharSelected} />
+                    </ErrorBoundary>
+                    <ErrorBoundary>
+                        <CharacterInfo charId={this.state.selectedChar} />
+                    </ErrorBoundary>
                 </main>
                 <img className='app__bg' src={bg} alt='superman'/>
             </div>
