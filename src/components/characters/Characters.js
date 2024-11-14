@@ -53,8 +53,13 @@ class Characters extends Component {
             .catch(this.onError)
     }
 
+    loadCharByScroll = () => {
+        this.onRequest(this.state.offset)
+    }
+
     componentDidMount() {
         this.onRequest()
+        window.addEventListener('scrollend', this.loadCharByScroll)
     }
 
     findString = (string, substring) => {
