@@ -1,4 +1,5 @@
 import { Component } from 'react'
+import React from 'react'
 import Service from '../../services/Service'
 import Spinner from '../spinner/Spinner'
 
@@ -13,10 +14,23 @@ class Characters extends Component {
         error: false,
         newItemLoading: false,
         offset: 210,
-        charEnded: false, 
+        charEnded: false,
+        refChar: [],
     }
 
     service = new Service()
+
+    itemRefs = []
+
+    setRefs = ref => {
+        this.itemRefs.push(ref)
+    }
+
+    focusOnItem = (index) => {
+        this.itemRefs.forEach(el => el.classList.remove('characters__card-active'))
+        this.itemRefs[index].classList.add('characters__card-active')
+        this.itemRefs[index].focus()
+    }
 
     onError = () => {
         this.setState({
@@ -53,13 +67,17 @@ class Characters extends Component {
             .catch(this.onError)
     }
 
-    loadCharByScroll = () => {
-        this.onRequest(this.state.offset)
+    // loadCharByScroll = () => {
+    //     this.onRequest(this.state.offset)
+    // }
+
+    createArrRef = elem => {
+        this.myRefChar = elem
     }
 
     componentDidMount() {
         this.onRequest()
-        window.addEventListener('scrollend', this.loadCharByScroll)
+       //window.addEventListener('scrollend', this.loadCharByScroll)
     }
 
     findString = (string, substring) => {
@@ -70,14 +88,26 @@ class Characters extends Component {
         return 'characters__card__img'
     }
 
+    showCharByEnter = (e, id) => {
+        if (e.code === "Enter") {
+            this.props.onCharSelected(id)
+        }
+    }
+
     showCharacters = () => {
-        const elements = this.state.characters.map(({name, thumbnail, id}) => {
+        const elements = this.state.characters.map(({name, thumbnail, id}, index) => {
             const imgClass = this.findString(thumbnail, 'image_not_available.jpg')
             return (
-                <li 
+                <li ref={this.setRefs}
+                    tabIndex={1 + index}
                     className="characters__card" 
                     key={id}
-                    onClick={() => this.props.onCharSelected(id)}>
+                    onClick={(e) => {
+                        this.props.onCharSelected(id)
+                        this.focusOnItem(index)
+                        }}
+                    onKeyDown={e => this.showCharByEnter(e, id)}>
+                        
                     <img 
                         className={imgClass} 
                         src={thumbnail} 
@@ -86,7 +116,6 @@ class Characters extends Component {
                 </li>
             )
         })
-
         return elements
     }
 

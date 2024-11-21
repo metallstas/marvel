@@ -20,6 +20,10 @@ class App extends Component {
          })
     }
 
+    componentDidUpdate() {
+        //console.log(this.state.selectedChar)
+    }
+
     render () {
         return (
             <div className="app">
