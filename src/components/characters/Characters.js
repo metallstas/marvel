@@ -1,4 +1,4 @@
-import { Component } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import React from 'react'
 import Service from '../../services/Service'
 import Spinner from '../spinner/Spinner'
@@ -6,81 +6,64 @@ import Spinner from '../spinner/Spinner'
 import './characters.scss'
 import '../../style/buttons.scss'
 
-class Characters extends Component {
+const Characters = ({onCharSelected}) => {
 
-    state = {
-        characters: [],
-        loading: true,
-        error: false,
-        newItemLoading: false,
-        offset: 210,
-        charEnded: false,
-        refChar: [],
+    const [characters, setCharacters] = useState([])
+    const [loading, setLoading] = useState(true)
+    const [error, setError] = useState(false)
+    const [newItemLoading, setNewItemLoading] = useState(false)
+    const [offset, setOffset] = useState(210)
+    const [charEnded, setCharEnded] = useState(false)
+
+    const service = new Service()
+
+    const itemRefs = useRef([])
+
+    useEffect(() => {
+        onRequest(offset)
+    }, [])
+
+    const focusOnItem = (index) => {
+        itemRefs.current.forEach(el => el.classList.remove('characters__card-active'))
+        itemRefs.current[index].classList.add('characters__card-active')
+        itemRefs.current[index].focus()
     }
 
-    service = new Service()
-
-    itemRefs = []
-
-    setRefs = ref => {
-        this.itemRefs.push(ref)
+    const onError = () => {
+        setError(true)
+        setLoading(false)
     }
 
-    focusOnItem = (index) => {
-        this.itemRefs.forEach(el => el.classList.remove('characters__card-active'))
-        this.itemRefs[index].classList.add('characters__card-active')
-        this.itemRefs[index].focus()
-    }
-
-    onError = () => {
-        this.setState({
-            error: true
-        })
-    }
-
-    onCharAllLoaded = (characters) => {
+    const onCharAllLoaded = (newCharacters) => {
         let ended = false
-        if (characters.length < 9) {
+        if (newCharacters.length < 9) {
             ended = true
         }
 
-        this.setState((prevState) => ({
-                characters: [...prevState.characters, ...characters],
-                loading: false,
-                newItemLoading: false,
-                offset: prevState.offset + 9,
-                charEnded: ended
-            })
-        )
+        setCharacters(characters => [...characters, ...newCharacters])
+        setLoading(false)
+        setNewItemLoading(false)
+        setOffset(offset => offset + 9)
+        setCharEnded(ended)
+
     }
 
-    onCharListLoading = () => {
-        this.setState({
-            newItemLoading: true,
-        })
+    const onCharListLoading = () => {
+        setNewItemLoading(true)
     }
 
-    onRequest = (offset) => {
-        this.onCharListLoading()
-        this.service.getAllChracters(offset)
-            .then(this.onCharAllLoaded)
-            .catch(this.onError)
+    const onRequest = (offset) => {
+        onCharListLoading()
+        service.getAllChracters(offset)
+            .then(onCharAllLoaded)
+            .catch(onError)
     }
 
     // loadCharByScroll = () => {
     //     this.onRequest(this.state.offset)
     // }
 
-    createArrRef = elem => {
-        this.myRefChar = elem
-    }
-
-    componentDidMount() {
-        this.onRequest()
-       //window.addEventListener('scrollend', this.loadCharByScroll)
-    }
-
-    findString = (string, substring) => {
+    const findString = (string, substring) => {
         const index = string.indexOf(substring)
         if (index !== -1) {
             return 'characters__card__img characters__card__img-not'
@@ -88,25 +71,26 @@ class Characters extends Component {
         return 'characters__card__img'
     }
 
-    showCharByEnter = (e, id) => {
+    const showCharByEnter = (e, id, index) => {
         if (e.code === "Enter") {
-            this.props.onCharSelected(id)
+            onCharSelected(id)
+            focusOnItem(index)
         }
     }
 
-    showCharacters = () => {
-        const elements = this.state.characters.map(({name, thumbnail, id}, index) => {
-            const imgClass = this.findString(thumbnail, 'image_not_available.jpg')
+    const showCharacters = () => {
+        const elements = characters.map(({name, thumbnail, id}, index) => {
+            const imgClass = findString(thumbnail, 'image_not_available.jpg')
             return (
-                <li ref={this.setRefs}
+                <li ref={el => itemRefs.current[index] = el}
                     tabIndex={1 + index}
                     className="characters__card" 
                     key={id}
                     onClick={(e) => {
-                        this.props.onCharSelected(id)
-                        this.focusOnItem(index)
+                        onCharSelected(id)
+                        focusOnItem(index)
                         }}
-                    onKeyDown={e => this.showCharByEnter(e, id)}>
+                    onKeyDown={e => showCharByEnter(e, id, index)}>
                         
                     <img 
                         className={imgClass} 
@@ -119,28 +103,27 @@ class Characters extends Component {
         return elements
     }
 
-    render () {
-        const {loading, offset, newItemLoading, charEnded} = this.state
-        const spinner = loading ? <Spinner /> : null
-        const charElements = loading ? null : this.showCharacters()
+    
+    const spinner = loading ? <Spinner /> : null
+    const charElements = loading ? null : showCharacters()
 
-        return (
-            <div className='wrapper'>
-                {spinner}
-                <ul className='characters'>
-                    {charElements}
-                </ul>
-                <button 
-                    disabled={newItemLoading}
-                    onClick={() => this.onRequest(offset)}
-                    style={{'display': charEnded ? 'none' : 'block'}}
-                    className='btn btn-long'
-                    >
-                    Load More
-                </button>
-            </div>
-        )
-    }
+    return (
+        <div className='wrapper'>
+            {spinner}
+            <ul className='characters'>
+                {charElements}
+            </ul>
+            <button 
+                disabled={newItemLoading}
+                onClick={() => onRequest(offset)}
+                style={{'display': charEnded ? 'none' : 'block'}}
+                className='btn btn-long'
+                >
+                Load More
+            </button>
+        </div>
+    )
+    
     
 }
 

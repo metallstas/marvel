@@ -1,4 +1,4 @@
-import { Component } from 'react'
+import { useState } from 'react'
 import Header from '../header/Header'
 import RandomChar from '../randomChar/RandomChar'
 import Characters from '../characters/Characters'
@@ -9,40 +9,31 @@ import '../../style/buttons.scss'
 import bg from '../../resourses/img/bg1.png'
 import ErrorBoundary from '../errorBoundary/ErrorBoundary'
 
-class App extends Component {
-    state = {
-        selectedChar: null
+const App = () => {
+
+    const [selectedChar, setSelectedChar] = useState(null)
+
+    const onCharSelected = (id) => {
+         setSelectedChar(id)
     }
 
-    onCharSelected = (id) => {
-         this.setState({
-            selectedChar: id
-         })
-    }
-
-    componentDidUpdate() {
-        //console.log(this.state.selectedChar)
-    }
-
-    render () {
-        return (
-            <div className="app">
-                <Header/>
+    return (
+        <div className="app">
+            <Header/>
+            <ErrorBoundary>
+                <RandomChar/>
+            </ErrorBoundary>
+            <main className='app__main'>
                 <ErrorBoundary>
-                    <RandomChar/>
+                    <Characters onCharSelected={onCharSelected} />
                 </ErrorBoundary>
-                <main className='app__main'>
-                    <ErrorBoundary>
-                        <Characters onCharSelected={this.onCharSelected} />
-                    </ErrorBoundary>
-                    <ErrorBoundary>
-                        <CharacterInfo charId={this.state.selectedChar} />
-                    </ErrorBoundary>
-                </main>
-                <img className='app__bg' src={bg} alt='superman'/>
-            </div>
-        )
-    }
+                <ErrorBoundary>
+                    <CharacterInfo charId={selectedChar} />
+                </ErrorBoundary>
+            </main>
+            <img className='app__bg' src={bg} alt='superman'/>
+        </div>
+    )
 }
 
 export default App
