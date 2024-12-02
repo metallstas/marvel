@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import Service from '../../services/Service'
+import useService from '../../services/Service'
 import Spinner from '../spinner/Spinner'
 import ErrorMessage from '../errorMessage/ErrorMessage'
 
@@ -12,10 +12,8 @@ import shield from '../../resourses/img/shield.png'
 const RandomChar = () => {
 
     const [char, setChar] = useState({})
-    const [loading, setLoading] = useState(true)
-    const [error, setError] = useState(false)
 
-    const service = new Service()
+    const {loading, error, getChracterById} = useService()
 
     useEffect(() => {
         updateChar()
@@ -23,25 +21,12 @@ const RandomChar = () => {
 
     const onCharLoaded = (newChar) => {
         setChar(newChar)
-        setLoading(false)
-    }
-
-    const onError = () => {
-        setLoading(false)
-        setError(true)
     }
 
     const updateChar = () => {
         const id = Math.floor(Math.random() * (1011400 - 1011000) + 1011000)
-        onLoadingChar()
-        service
-            .getChracterById(id)
+        getChracterById(id)
             .then(onCharLoaded)
-            .catch(onError)
-    }
-
-    const onLoadingChar = () => {
-        setLoading(true)
     }
 
     const errorMessage = error ? <ErrorMessage/> : null

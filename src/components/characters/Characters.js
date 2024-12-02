@@ -15,7 +15,7 @@ const Characters = ({onCharSelected}) => {
     const [offset, setOffset] = useState(210)
     const [charEnded, setCharEnded] = useState(false)
 
-    const service = new Service()
+    const service = useService()
 
     const itemRefs = useRef([])
 
