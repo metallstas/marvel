@@ -1,37 +1,31 @@
 import { useState, useEffect, useRef } from 'react'
 import React from 'react'
-import Service from '../../services/Service'
+import useService from '../../services/Service'
 import Spinner from '../spinner/Spinner'
 
 import './characters.scss'
 import '../../style/buttons.scss'
+import ErrorMessage from '../errorMessage/ErrorMessage'
 
 const Characters = ({onCharSelected}) => {
 
     const [characters, setCharacters] = useState([])
-    const [loading, setLoading] = useState(true)
-    const [error, setError] = useState(false)
     const [newItemLoading, setNewItemLoading] = useState(false)
     const [offset, setOffset] = useState(210)
     const [charEnded, setCharEnded] = useState(false)
 
-    const service = useService()
+    const {loading, error, getAllChracters} = useService()
 
     const itemRefs = useRef([])
 
     useEffect(() => {
-        onRequest(offset)
+        onRequest(offset, true)
     }, [])
 
     const focusOnItem = (index) => {
         itemRefs.current.forEach(el => el.classList.remove('characters__card-active'))
         itemRefs.current[index].classList.add('characters__card-active')
         itemRefs.current[index].focus()
-    }
-
-    const onError = () => {
-        setError(true)
-        setLoading(false)
     }
 
     const onCharAllLoaded = (newCharacters) => {
@@ -41,22 +35,16 @@ const Characters = ({onCharSelected}) => {
         }
 
         setCharacters(characters => [...characters, ...newCharacters])
-        setLoading(false)
         setNewItemLoading(false)
         setOffset(offset => offset + 9)
         setCharEnded(ended)
 
     }
 
-    const onCharListLoading = () => {
-        setNewItemLoading(true)
-    }
-
-    const onRequest = (offset) => {
-        onCharListLoading()
-        service.getAllChracters(offset)
+    const onRequest = (offset, initial) => {
+        initial ? setNewItemLoading(false) : setNewItemLoading(true)  
+        getAllChracters(offset)
             .then(onCharAllLoaded)
-            .catch(onError)
     }
 
     // loadCharByScroll = () => {
@@ -103,15 +91,16 @@ const Characters = ({onCharSelected}) => {
         return elements
     }
 
-    
-    const spinner = loading ? <Spinner /> : null
-    const charElements = loading ? null : showCharacters()
+    const items = showCharacters()
+    const errorMsg = error ? <ErrorMessage /> : null
+    const spinner = loading && !newItemLoading ? <Spinner /> : null
 
     return (
         <div className='wrapper'>
             {spinner}
+            {errorMsg}
             <ul className='characters'>
-                {charElements}
+                {items}
             </ul>
             <button 
                 disabled={newItemLoading}

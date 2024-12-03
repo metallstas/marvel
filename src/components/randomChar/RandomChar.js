@@ -13,7 +13,7 @@ const RandomChar = () => {
 
     const [char, setChar] = useState({})
 
-    const {loading, error, getChracterById} = useService()
+    const {loading, error, getChracterById, clearError} = useService()
 
     useEffect(() => {
         updateChar()
@@ -24,6 +24,7 @@ const RandomChar = () => {
     }
 
     const updateChar = () => {
+        clearError()
         const id = Math.floor(Math.random() * (1011400 - 1011000) + 1011000)
         getChracterById(id)
             .then(onCharLoaded)

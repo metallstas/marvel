@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import Spinner from '../spinner/Spinner'
 import ErrorMessage from '../errorMessage/ErrorMessage'
 import Skeleton from '../skeleton/Skeleton'
-import Service from '../../services/Service'
+import useService from '../../services/Service'
 
 import './characterInfo.scss'
 import '../../style/buttons.scss'
@@ -10,10 +10,8 @@ import '../../style/buttons.scss'
 const CharacterInfo = ({charId}) => {
 
     const [char, setChar] = useState(null)
-    const [loading, setLoading] = useState(false)
-    const [error, setError] = useState(false)
 
-    const service = new Service()
+    const {loading, error, getChracterById, clearError} = useService()
 
     useEffect(() => {
         updateChar()
@@ -23,26 +21,13 @@ const CharacterInfo = ({charId}) => {
         if (!charId) {
             return
         }
-        onLoadingChar()
-
-        service
-            .getChracterById(charId)
+        clearError()
+        getChracterById(charId)
             .then(onCharLoaded)
-            .catch(onError)
     }
 
     const onCharLoaded = (char) => {
         setChar(char)
-        setLoading(false)
-    }
-
-    const onError = () => {
-        setLoading(false)
-        setError(true)
-    }
-
-    const onLoadingChar = () => {
-        setLoading(true)
     }
 
     const skeleton = char || loading || error ? null : <Skeleton />
