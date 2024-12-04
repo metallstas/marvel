@@ -7,7 +7,7 @@ const ErrorMessage = () => {
             width: '150px', 
             height: '150px', 
             objectFit: 'contain',
-            margin: '0 auto',
+            margin: '20px auto',
         }} 
         src={error}
         alt='error'

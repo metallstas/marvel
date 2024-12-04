@@ -1,0 +1,59 @@
+
+.comics {
+    margin-top: 50px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    &__banner {
+        display: grid;
+        width: 100%;
+        grid-template-columns: 24% 60% 16%;
+        grid-template-rows: 100px;
+        background-color: #232222;
+        justify-items: center;
+        align-items: center;
+
+        p {
+            justify-self: left;
+            font-size: 24px;
+            font-weight: 700;
+            line-height: 28.13px;
+            text-align: left;
+            color: #fff;
+        }
+    }
+
+    .list {
+        margin-top: 50px;
+        margin-bottom: 50px;
+        display: grid;
+        grid-template-columns: repeat(4, 225px);
+        grid-template-rows: repeat(2, 415px);
+        column-gap: 65px;
+        row-gap: 55px;
+        text-align: left;
+        font-size: 14px;
+        font-weight: 700;
+
+        &__item {
+            img {
+                display: block;
+                width: 100%;
+                min-height: 350px;
+                cursor: pointer;
+            }
+        }
+
+        &__comic-name {
+            margin-top: 10px;
+            margin-bottom: 5px;
+            cursor: pointer;
+
+        }
+
+        &__comic-price {
+            color: rgba(0, 0, 0, 0.6);
+        }
+    }
+}

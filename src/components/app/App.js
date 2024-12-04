@@ -3,6 +3,7 @@ import Header from '../header/Header'
 import RandomChar from '../randomChar/RandomChar'
 import Characters from '../characters/Characters'
 import CharacterInfo from '../characterInfo/CharacterInfo'
+import Comicses from '../comics/Comicses'
 
 import './app.scss'
 import '../../style/buttons.scss'
@@ -20,7 +21,8 @@ const App = () => {
     return (
         <div className="app">
             <Header/>
-            <ErrorBoundary>
+            <Comicses />
+            {/* <ErrorBoundary>
                 <RandomChar/>
             </ErrorBoundary>
             <main className='app__main'>
@@ -31,7 +33,7 @@ const App = () => {
                     <CharacterInfo charId={selectedChar} />
                 </ErrorBoundary>
             </main>
-            <img className='app__bg' src={bg} alt='superman'/>
+            <img className='app__bg' src={bg} alt='superman'/> */}
         </div>
     )
 }
