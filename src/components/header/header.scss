@@ -7,7 +7,18 @@
         font-size: 28px;
         font-weight: 700;
     }
-    a.active {
+
+    &__link {
+        font-size: 28px;
+        font-weight: 700;
+        a {
+            &:hover {
+                color: $darkRed;
+            }
+        }
+    }
+
+    .active {
         color: $darkRed;
     }
 }

@@ -26,6 +26,9 @@
             box-shadow: 0px 5px 20px $darkRed;
             transform: translateY(-10px);
         }
+        &:hover {
+            transform: translateY(-10px);
+        }
         p {
             font-size: 22px;
             line-height: 25px;

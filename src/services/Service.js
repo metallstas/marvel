@@ -9,7 +9,7 @@ const useService = () => {
 
     const _baseOffset = 210
 
-    const getAllComicses = async (offset = 0) => {
+    const getAllComics = async (offset = 0) => {
         const result = await request(`${_apiBase}${_apiComics}limit=8&offset=${offset}&${_apiKey}`)
         return result.data.results.map(_transformComics)
     }
@@ -45,7 +45,7 @@ const useService = () => {
         }
     }
 
-    return {loading, error, getAllChracters, getChracterById, clearError, getAllComicses}
+    return {loading, error, getAllChracters, getChracterById, clearError, getAllComics}
 }
 
 export default useService

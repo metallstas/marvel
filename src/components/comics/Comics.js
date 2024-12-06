@@ -3,19 +3,19 @@ import useService from '../../services/Service'
 import Spinner from '../spinner/Spinner'
 import ErrorMessage from '../errorMessage/ErrorMessage'
 
-import './comicses.scss'
+import './comics.scss'
 import '../../style/buttons.scss'
 
 import heroes from '../../resourses/img/Avengers.png'
 import avengers from '../../resourses/img/Avengers logo.png'
 
-const Comicses = () => {
-    const [comicses, setComicses] = useState([])
+const Comics = () => {
+    const [comics, setComics] = useState([])
     const [newItemLoading, setNewItemLoading] = useState(false)
     const [offset, setOffset] = useState(0)
     const [ended, setEnded] = useState(false)
     
-    const {getAllComicses, clearError, error, loading} = useService()
+    const {getAllComics, clearError, error, loading} = useService()
 
     useEffect(() => {
         onRequest(true)
@@ -23,30 +23,30 @@ const Comicses = () => {
 
     const onRequest = (initial) => {
         initial ? setNewItemLoading(false) : setNewItemLoading(true)
-        getAllComicses(offset)
-            .then(newComicses => onComicsesLoaded(newComicses))
+        getAllComics(offset)
+            .then(newComics => onComicsesLoaded(newComics))
 
         setOffset(prev => prev + 8)
     }
 
-    const onComicsesLoaded = (newComicses) => {
+    const onComicsesLoaded = (newComics) => {
         let ended = false
-        if (newComicses.length < 8) {
+        if (newComics.length < 8) {
             ended = true
         }
-        setComicses(prev => [...prev, ...newComicses])
+        setComics(prev => [...prev, ...newComics])
         setNewItemLoading(false)
         setEnded(ended)
     }
 
-    const updateComicses = () => {
+    const updateComics = () => {
         clearError()
         setOffset(prev => prev + 8)
         onRequest(false)  
     }
 
-    const comicsList = (comicses) => {
-        return comicses.map(({id, img, title, price}, index) => {
+    const comicsList = (comics) => {
+        return comics.map(({id, img, title, price}, index) => {
             return (
                 <li className='list__item'
                     key={index}>
@@ -70,15 +70,18 @@ const Comicses = () => {
                 <img src={avengers} alt='avengers' />
             </div>
             {errorMsg}
+
+            {loading && !newItemLoading ?
+             <Spinner /> : 
             <ul className='list'>
-                {comicsList(comicses)}
-            </ul>
+                {comicsList(comics)}
+            </ul> }
             {spiner}
-            
+
             <button 
                 disabled={newItemLoading}
                 style={{'display': ended ? 'none' : 'block'}}
-                onClick={updateComicses}
+                onClick={updateComics}
                 className='btn btn-long'>
                 Load More</button>
         </section>
@@ -86,4 +89,4 @@ const Comicses = () => {
     )
 }
 
-export default Comicses
+export default Comics
