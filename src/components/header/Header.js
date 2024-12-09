@@ -14,12 +14,11 @@ const Header = () => {
                     className={({isActive}) => 'nav-link' + (isActive ? ' active' : '')}
                     to='/'>
                     Characters
-                </NavLink> /  
+                </NavLink> /   
                 <NavLink 
-                    end 
                     className={({isActive}) => 'nav-link' + (isActive ? ' active' : '')}
                     to='/comics'> 
-                    Comics
+                     Comics
                 </NavLink>
             </div>
         </header>

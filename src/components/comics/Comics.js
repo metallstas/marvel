@@ -2,12 +2,11 @@ import { useEffect, useState } from 'react'
 import useService from '../../services/Service'
 import Spinner from '../spinner/Spinner'
 import ErrorMessage from '../errorMessage/ErrorMessage'
+import { NavLink } from 'react-router-dom'
+import ComicsBanner from '../ComicsBanner/ComicsBanner'
 
 import './comics.scss'
 import '../../style/buttons.scss'
-
-import heroes from '../../resourses/img/Avengers.png'
-import avengers from '../../resourses/img/Avengers logo.png'
 
 const Comics = () => {
     const [comics, setComics] = useState([])
@@ -50,9 +49,11 @@ const Comics = () => {
             return (
                 <li className='list__item'
                     key={index}>
-                    <img src={img} alt="comics" />
-                    <p className='list__comic-name'>{title.length > 60 ? title.slice(0, 60) + '...' : title}</p>
-                    <p className='list__comic-price'>{price}$</p>
+                    <NavLink to={`/comics/${id}`}>
+                        <img src={img} alt="comics" />
+                        <p className='list__comic-name'>{title.length > 60 ? title.slice(0, 60) + '...' : title}</p>
+                        <p className='list__comic-price'>{price}$</p>
+                    </NavLink>
                 </li>
             )
         })
@@ -63,12 +64,7 @@ const Comics = () => {
 
     return (
         <section className='comics'>
-            <div className='comics__banner'>
-                <img src={heroes} alt='heroes' />
-                <p>New comics every week!<br/>
-                Stay tuned!</p>
-                <img src={avengers} alt='avengers' />
-            </div>
+            <ComicsBanner />
             {errorMsg}
 
             {loading && !newItemLoading ?

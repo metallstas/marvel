@@ -1,0 +1,42 @@
+@import '../../../style/variables.scss';
+
+.comic {
+    display: flex;
+    justify-content: start;
+
+    & img {
+        display: block;
+        margin-right: 50px;
+        width: 293px;
+    }
+
+    &__link {
+        display: block;
+        font-size: 18px;
+        font-weight: 700;
+        margin-left: auto;
+        min-width: max-content;
+    }
+
+    &__info {
+        display: flex;
+        flex-direction: column;
+        gap: 25px;
+        margin-right: 120px;
+        font-size: 18px;
+        font-weight: 400;
+        line-height: 21.09px;
+        text-align: left;
+
+        &__title {
+            font-size: 22px;
+            font-weight: 700;
+        }
+
+        &__price {
+            font-size: 24px;
+            font-weight: 700;
+            color: $darkRed;
+        }
+    }
+}

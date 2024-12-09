@@ -1,5 +1,5 @@
 import Header from '../header/Header'
-import { MainPage, ComicsPage, Page404 } from '../pages'
+import { MainPage, ComicsPage, Page404, SingleComic} from '../pages'
 
 import './app.scss'
 import '../../style/buttons.scss'
@@ -11,8 +11,9 @@ const App = () => {
         <Router>
             <div className="app">
                 <Header/>
-                <Routes>
+                 <Routes>
                     <Route path='/comics' element={<ComicsPage/>}/>
+                    <Route path='/comics/:comicId' element={<SingleComic/>}/>
                     <Route path='/' element={<MainPage/>}/>
                     <Route path='*' element={<Page404/>}/>
                 </Routes>
