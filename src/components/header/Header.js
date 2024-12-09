@@ -1,4 +1,4 @@
-import { Link, NavLink } from 'react-router-dom/cjs/react-router-dom.min'
+import { Link, NavLink } from 'react-router-dom'
 import './header.scss'
 
 const Header = () => {
@@ -9,8 +9,18 @@ const Header = () => {
                 
             </h1>
             <div className='header__link'>
-                <NavLink exact activeClassName='active' to='/'>Characters</NavLink> /  
-                <NavLink exact activeClassName='active' to='/comics'> Comics</NavLink>
+                <NavLink 
+                    end
+                    className={({isActive}) => 'nav-link' + (isActive ? ' active' : '')}
+                    to='/'>
+                    Characters
+                </NavLink> /  
+                <NavLink 
+                    end 
+                    className={({isActive}) => 'nav-link' + (isActive ? ' active' : '')}
+                    to='/comics'> 
+                    Comics
+                </NavLink>
             </div>
         </header>
     )

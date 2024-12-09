@@ -1,10 +1,9 @@
 import Header from '../header/Header'
-import { MainPage, ComicsPage } from '../pages'
-
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom/cjs/react-router-dom.min'
+import { MainPage, ComicsPage, Page404 } from '../pages'
 
 import './app.scss'
 import '../../style/buttons.scss'
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 
 const App = () => {
 
@@ -12,14 +11,11 @@ const App = () => {
         <Router>
             <div className="app">
                 <Header/>
-                <Switch>
-                    <Route exect path='/comics'>
-                    <ComicsPage />
-                    </Route>
-                    <Route exect path='/'> 
-                        <MainPage />
-                    </Route>
-                </Switch>
+                <Routes>
+                    <Route path='/comics' element={<ComicsPage/>}/>
+                    <Route path='/' element={<MainPage/>}/>
+                    <Route path='*' element={<Page404/>}/>
+                </Routes>
             </div>
         </Router>
     )
