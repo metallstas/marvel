@@ -2,11 +2,13 @@
    position: relative;
    max-width: 1100px;
    margin: 50px auto;
+
    &__bg {
       position: absolute;
+      width: 40%;
       bottom: -45px;
       right: -140px;
-      z-index: 0;
+      z-index: -1;
    }
    &__main {
       display: flex;

@@ -41,12 +41,10 @@ const useService = () => {
     }
 
     const _transformComics = (comics) => {
-        console.log(comics)
         return {
             id: comics.id,
             pageCount: comics.pageCount,
             description: comics.description,
-            language: comics.textObjects[0].language || 'en-us',
             title: comics.title,
             price: comics.prices[0].price,
             img: comics.thumbnail.path + '.' + comics.thumbnail.extension

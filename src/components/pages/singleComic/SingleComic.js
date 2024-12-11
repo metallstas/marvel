@@ -38,7 +38,7 @@ const SingleComic = () => {
 }
 
 const View = ({comic}) => {
-    const {title, description, pageCount, img, language, price } = comic
+    const {title, description, pageCount, img, price } = comic
 
     return (
         <>
@@ -49,7 +49,7 @@ const View = ({comic}) => {
                     <h3 className="comic__info__title">{title}</h3>
                     <p>{description.length > 0 ? description : 'There is no description for this comic'}</p>
                     <p>{pageCount} pages</p>
-                    <p>Language: {language}</p>
+                    <p>Language: en-us</p>
                     <p className="comic__info__price">{price}$</p>
                 </div>
                 <NavLink to="/comics" className="comic__link">Back to all</NavLink>

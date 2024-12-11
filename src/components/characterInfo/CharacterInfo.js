@@ -6,6 +6,7 @@ import useService from '../../services/Service'
 
 import './characterInfo.scss'
 import '../../style/buttons.scss'
+import { NavLink } from 'react-router-dom'
 
 const CharacterInfo = ({charId}) => {
 
@@ -48,18 +49,39 @@ const CharacterInfo = ({charId}) => {
 const View = ({char}) => {
     const {name, description, thumbnail, homepage, wiki, comics} = char
 
-    const comicsList = () => {
+    const [comicsListShow, setComicsListShow] = useState([])
+
+    useEffect(() => {
+        setComicsListShow(comicsListShort())
+    }, [])
+
+    const btn = <button onClick={() => {setComicsListShow(allComicsList)}} className="char__btn">More</button> 
+    
+    const allComicsList = () => {
+        return comics.map((el, i) => {
+            const id = el.resourceURI.match(/\/\d{4,5}/g)[0].slice(1)
+            return <li className="char__comics__list__item" key={i}><NavLink to={`/comics/${id}`}>{el.name}</NavLink></li>
+        })
+    }
+
+    const comicsListShort = () => {
+
         if (comics.length === 0) {
             return <span>There is no comics for this hero</span>
-        } 
+        }
 
-        return comics.map((el, i) => {
-            if(i > 10) {
-                return
-            }
-            
-            return <li key={i}>{el.name}</li>
+        const allComics = comics.map((el, i) => {
+            const id = el.resourceURI.match(/\/\d{4,5}/g)[0].slice(1)
+
+            return <li 
+                        className="char__comics__list__item" 
+                        key={i}>
+                        <NavLink to={`/comics/${id}`}>{el.name}</NavLink>
+                        </li>
         })
+
+        return allComics.splice(0, 10)
+
     }
 
     return (
@@ -77,9 +99,10 @@ const View = ({char}) => {
             </div>
             <div className="char__comics">
                 <p>Comics: </p>
-                <ul>
-                    {comicsList()}
+                <ul className='char__comics__list'>
+                    {comicsListShow}
                 </ul>
+                {comicsListShow.length < 11 ? btn : null}
             </div>
         </>
     )

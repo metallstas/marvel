@@ -14,8 +14,7 @@ const Header = () => {
                     className={({isActive}) => 'nav-link' + (isActive ? ' active' : '')}
                     to='/'>
                     Characters
-                </NavLink> /   
-                <NavLink 
+                </NavLink> / <NavLink 
                     className={({isActive}) => 'nav-link' + (isActive ? ' active' : '')}
                     to='/comics'> 
                      Comics

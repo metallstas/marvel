@@ -9,7 +9,7 @@ import '../../style/buttons.scss'
 import hammer from '../../resourses/img/mjolnir.png'
 import shield from '../../resourses/img/shield.png'
 
-const RandomChar = () => {
+const RandomChar = ({onCharSelected}) => {
 
     const [char, setChar] = useState({})
 
@@ -32,7 +32,7 @@ const RandomChar = () => {
 
     const errorMessage = error ? <ErrorMessage/> : null
     const spiner = loading ? <Spinner/> : null
-    const content = !(loading || error) ? <View char={char} /> : null
+    const content = !(loading || error) ? <View onCharSelected={onCharSelected} char={char} /> : null
 
     return (
         <div className="random-char">
@@ -54,8 +54,8 @@ const RandomChar = () => {
     )
 }
 
-const View = ({char}) => {
-    const {name, description, thumbnail, homepage, wiki} = char
+const View = ({char, onCharSelected}) => {
+    const {name, description, thumbnail, homepage, wiki, id} = char
 
     const showDescr = (descr) => {
         if (!descr) {
@@ -70,11 +70,11 @@ const View = ({char}) => {
     return (
         <>
             <div className="random-char__img-wrapper">
-                <img src={thumbnail} alt="char" />
+                <img onClick={() => onCharSelected(id)} src={thumbnail} alt="char" />
             </div>
             <div className="random-char__descr">
                 <div>
-                    <h2>{name}</h2>
+                    <h2 onClick={() => onCharSelected(id)}>{name}</h2>
                     <p>{showDescr(description)} </p>
                 </div>
                 <div className='random-char__btn-block'>

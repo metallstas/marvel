@@ -7,7 +7,6 @@ import ErrorBoundary from '../errorBoundary/ErrorBoundary'
 
 import bg from '../../resourses/img/bg1.png'
 
-
 const MainPage = () => {
 
     const [selectedChar, setSelectedChar] = useState(null)
@@ -19,7 +18,7 @@ const MainPage = () => {
     return (
         <>
             <ErrorBoundary>
-                <RandomChar/>
+                <RandomChar onCharSelected={onCharSelected}/>
             </ErrorBoundary>
             <main className='app__main'>
                 <ErrorBoundary>
