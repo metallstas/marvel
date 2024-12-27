@@ -89,7 +89,7 @@ const ViewChar = ({char}) => {
             <img className="char__img" src={thumbnail} alt='photo char'/>
             <div className="char__info">
                 <p className="char__info__name">{name}</p>
-                <p className="char__info__descr">{description}</p>
+                <p className="char__info__descr">{description ? description : 'There is no description for this character'}</p>
             </div>
         </section>
     )
@@ -101,7 +101,7 @@ const ViewCharList = ({allChar, nameInput}) => {
         <section className="characters">
             <ul className="characters__list">
                 {allChar.map(({id, name}) => {
-                    return <li key={id} className="characters__list__item"><NavLink to={`/${nameInput}/${name}`}>{name}</NavLink></li>
+                    return <NavLink key={id} to={`/${nameInput}/${name}`}><li className="characters__list__item">{name}</li></NavLink>
                 })}
             </ul>
         </section>
