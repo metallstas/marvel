@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react'
+
 import Spinner from '../spinner/Spinner'
 import ErrorMessage from '../errorMessage/ErrorMessage'
 import Skeleton from '../skeleton/Skeleton'
 import useService from '../../services/Service'
+import SearchChar from '../searchChar/SearchChar'
 
 import './characterInfo.scss'
 import '../../style/buttons.scss'
@@ -37,11 +39,14 @@ const CharacterInfo = ({charId}) => {
     const content = !(loading || error || !char) ? <View char={char} /> : null 
 
     return (
-        <section className="char">
-            {skeleton}
-            {errorMessage}
-            {spinner}
-            {content}
+        <section className='char-info'>
+            <div className="char">
+                {skeleton}
+                {errorMessage}
+                {spinner}
+                {content}
+            </div>
+            <SearchChar />
         </section>
     )
 }

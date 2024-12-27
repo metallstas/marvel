@@ -1,10 +1,10 @@
 
-const Spinner = () => {
+const Spinner = ({width = 100, height = 100}) => {
 
     const color = '#9F0013'
 
     return (
-        <svg xmlns="http://www.w3.org/2000/svg" style={{margin: 'auto', background: 'none', display: 'block'}} width="100px" height="100px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
+        <svg xmlns="http://www.w3.org/2000/svg" style={{margin: 'auto', background: 'none', display: 'block'}} width={width + 'px'} height={height + 'px'} viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
             <g transform="translate(80,50)">
                 <g transform="rotate(0)">
                     <circle cx="0" cy="0" r="7" fill={color} fillOpacity="1">

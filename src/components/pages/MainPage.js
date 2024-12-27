@@ -25,8 +25,8 @@ const MainPage = () => {
                     <Characters onCharSelected={onCharSelected} />
                 </ErrorBoundary>
                 <ErrorBoundary>
-                    <CharacterInfo charId={selectedChar} />
                 </ErrorBoundary>
+                <CharacterInfo charId={selectedChar} />
             </main>
             <img className='app__bg' src={bg} alt='superman'/>
         </>
