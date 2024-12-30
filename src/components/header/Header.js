@@ -10,11 +10,12 @@ const Header = () => {
             </h1>
             <div className='header__link'>
                 <NavLink 
-                    end
+                    
                     className={({isActive}) => 'nav-link' + (isActive ? ' active' : '')}
-                    to='/'>
+                    to='/characters'>
                     Characters
                 </NavLink> / <NavLink 
+                    
                     className={({isActive}) => 'nav-link' + (isActive ? ' active' : '')}
                     to='/comics'> 
                      Comics

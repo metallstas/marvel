@@ -20,10 +20,10 @@ const App = () => {
                     <Routes>
                         <Route path='/comics' element={<ComicsPage />} />
                         <Route path='/comics/:comicId' element={<SingleComic />} />
-                        <Route path='/' element={<MainPage />} />
+                        <Route path='/characters' element={<MainPage />} />
                         <Route path='*' element={<Page404 />} />
-                        <Route path='/:input/:name' element={<SingleComic />}/>
-                        <Route path='/:input' element={<SingleComic />}/>
+                        <Route path='/characters/:input/:name' element={<SingleComic />}/>
+                        <Route path='/characters/:input' element={<SingleComic />}/>
                     </Routes>
                 </Suspense>
             </div>

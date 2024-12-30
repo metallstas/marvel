@@ -9,7 +9,7 @@ import ComicsBanner from "../../ComicsBanner/ComicsBanner"
 
 const SingleComic = () => {
     const {comicId, name, input} = useParams()
-    console.log(input, name, comicId)
+    
     const [comic, setComic] = useState(null)
     const [allChar, setAllChar] = useState(null)
     const [singleChar, setSingleChar] = useState('')
@@ -98,10 +98,10 @@ const ViewChar = ({char}) => {
 const ViewCharList = ({allChar, nameInput}) => {
     
     return (
-        <section className="characters">
-            <ul className="characters__list">
+        <section className="charactersList">
+            <ul className="charactersList__list">
                 {allChar.map(({id, name}) => {
-                    return <NavLink key={id} to={`/${nameInput}/${name}`}><li className="characters__list__item">{name}</li></NavLink>
+                    return <NavLink key={id} to={`/characters/${nameInput}/${name}`}><li className="charactersList__list__item">{name}</li></NavLink>
                 })}
             </ul>
         </section>

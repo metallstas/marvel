@@ -29,7 +29,7 @@ const SearchChar = () => {
         return (
             <div className='found-char'>
                 <p className='search__success'>There is! Visit {input} page?</p>
-                <NavLink to={`/${input}`} className='btn btn-second'>to page</NavLink>
+                <NavLink to={`/characters/${input}`} className='btn btn-second'>to page</NavLink>
             </div>
         )
     }
