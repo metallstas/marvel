@@ -5,7 +5,7 @@ const Header = () => {
     return (
         <header className='header'>
             <h1>
-                <Link to='/'><span className='active'>Marvel</span> information portal</Link> 
+                <Link to='/characters'><span className='active'>Marvel</span> information portal</Link> 
                 
             </h1>
             <div className='header__link'>
