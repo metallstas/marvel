@@ -1,21 +1,20 @@
 import { useEffect, useState } from "react"
 import { NavLink, useParams } from "react-router-dom"
 import useService from "../../../services/Service"
+import setContent from "../../utils/setContent"
 
 import './singleComic.scss'
-import ErrorMessage from "../../errorMessage/ErrorMessage"
-import Spinner from "../../spinner/Spinner"
 import ComicsBanner from "../../ComicsBanner/ComicsBanner"
 
 const SingleComic = () => {
     const {comicId, name, input} = useParams()
-    
+
     const [comic, setComic] = useState(null)
     const [allChar, setAllChar] = useState(null)
-    const [singleChar, setSingleChar] = useState('')
+    const [singleChar, setSingleChar] = useState(null)
 
 
-    const {loading, error, getComicById, clearError, getCharByName, getSingleCharByName} = useService()
+    const {getComicById, clearError, getCharByName, getSingleCharByName, process, setProcess} = useService()
 
     useEffect(() => {
         if (comicId) updateComic()
@@ -28,44 +27,35 @@ const SingleComic = () => {
         clearError()
         getComicById(comicId)
             .then(setComic)
+            .then(() => setProcess('confirmed'))
     }
 
     const updateChar = () => {
         clearError()
         getCharByName(input)
             .then(res => setAllChar(res.data))
+            .then(() => setProcess('confirmed'))
     }
 
     const updateSingleChar = () => {
         clearError()
         getSingleCharByName(name)
             .then(setSingleChar)
+            .then(() => setProcess('confirmed'))
     }
-
-    const content = () => {
-        if (comicId) {return contentComic}
-        if (name) {return contentSingleChar}
-        if (input) {return contentAllChar}
-    }
-
-    const errorMessage = error ? <ErrorMessage /> : null
-    const spinner = loading ? <Spinner /> : null
-    const contentComic = !(loading || error || !comic) ? <ViewComic comic={comic} /> : null
-    const contentSingleChar = !(loading || error || !singleChar) ? <ViewChar char={singleChar} /> : null
-    const contentAllChar = !(loading || error|| !allChar) ? <ViewCharList allChar={allChar} nameInput={input} /> : null
 
     return (
         <>
             <ComicsBanner />
-            {errorMessage}
-            {spinner}
-            {content()}
+            { comicId? setContent(process, ViewComic, comic) : null}
+            { singleChar? setContent(process, ViewChar, singleChar) : null}
+            { input? setContent(process, () => ViewCharList({allChar, input})) : null}
         </>
     )
 }
 
-const ViewComic = ({comic}) => {
-    const {title, description, pageCount, img, price } = comic
+const ViewComic = ({data}) => {
+    const {title, description, pageCount, img, price } = data
 
     return (
         <section className="comic">
@@ -82,14 +72,14 @@ const ViewComic = ({comic}) => {
     )
 }
 
-const ViewChar = ({char}) => {
-    const {thumbnail, name, description} = char
+const ViewChar = ({data}) => {
+    const {thumbnail, name, description} = data
     return (
-        <section className="char">
-            <img className="char__img" src={thumbnail} alt='photo char'/>
-            <div className="char__info">
-                <p className="char__info__name">{name}</p>
-                <p className="char__info__descr">{description ? description : 'There is no description for this character'}</p>
+        <section className="single-char">
+            <img className="single-char__img" src={thumbnail} alt='photo char'/>
+            <div className="single-char__info">
+                <p className="single-char__info__name">{name}</p>
+                <p className="single-char__info__descr">{description ? description : 'There is no description for this character'}</p>
             </div>
         </section>
     )
@@ -101,7 +91,9 @@ const ViewCharList = ({allChar, nameInput}) => {
         <section className="charactersList">
             <ul className="charactersList__list">
                 {allChar.map(({id, name}) => {
-                    return <NavLink key={id} to={`/characters/${nameInput}/${name}`}><li className="charactersList__list__item">{name}</li></NavLink>
+                    return <NavLink key={id} to={`/characters/${nameInput}/${name}`}>
+                        <li className="charactersList__list__item">{name}</li>
+                    </NavLink>
                 })}
             </ul>
         </section>

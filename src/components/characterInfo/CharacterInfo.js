@@ -1,8 +1,6 @@
 import { useState, useEffect } from 'react'
 
-import Spinner from '../spinner/Spinner'
-import ErrorMessage from '../errorMessage/ErrorMessage'
-import Skeleton from '../skeleton/Skeleton'
+import setContent from '../utils/setContent'
 import useService from '../../services/Service'
 import SearchChar from '../searchChar/SearchChar'
 
@@ -14,7 +12,7 @@ const CharacterInfo = ({charId}) => {
 
     const [char, setChar] = useState(null)
 
-    const {loading, error, getChracterById, clearError} = useService()
+    const { process, setProcess, getChracterById, clearError} = useService()
 
     useEffect(() => {
         updateChar()
@@ -27,32 +25,25 @@ const CharacterInfo = ({charId}) => {
         clearError()
         getChracterById(charId)
             .then(onCharLoaded)
+            .then(() => setProcess('confirmed'))
     }
 
     const onCharLoaded = (char) => {
         setChar(char)
     }
 
-    const skeleton = char || loading || error ? null : <Skeleton />
-    const errorMessage = error ? <ErrorMessage /> : null
-    const spinner = loading ? <Spinner /> : null
-    const content = !(loading || error || !char) ? <View char={char} /> : null 
-
     return (
         <section className='char-info'>
             <div className="char">
-                {skeleton}
-                {errorMessage}
-                {spinner}
-                {content}
+                {setContent(process, View, char)}
             </div>
             <SearchChar />
         </section>
     )
 }
 
-const View = ({char}) => {
-    const {name, description, thumbnail, homepage, wiki, comics} = char
+const View = ({data}) => {
+    const {name, description, thumbnail, homepage, wiki, comics} = data
 
     const [comicsListShow, setComicsListShow] = useState([])
 

@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import useService from '../../services/Service'
 import Spinner from '../spinner/Spinner'
 import ErrorMessage from '../errorMessage/ErrorMessage'
+import setContent from '../utils/setContent'
 
 import './randomChar.scss'
 import '../../style/buttons.scss'
@@ -13,7 +14,7 @@ const RandomChar = ({onCharSelected}) => {
 
     const [char, setChar] = useState({})
 
-    const {loading, error, getChracterById, clearError} = useService()
+    const {process, setProcess, getChracterById, clearError} = useService()
 
     useEffect(() => {
         updateChar()
@@ -28,18 +29,13 @@ const RandomChar = ({onCharSelected}) => {
         const id = Math.floor(Math.random() * (1011400 - 1011000) + 1011000)
         getChracterById(id)
             .then(onCharLoaded)
+            .then(() => setProcess('confirmed'))
     }
-
-    const errorMessage = error ? <ErrorMessage/> : null
-    const spiner = loading ? <Spinner/> : null
-    const content = !(loading || error) ? <View onCharSelected={onCharSelected} char={char} /> : null
 
     return (
         <div className="random-char">
             <div className="random-char__block">
-                {errorMessage}
-                {spiner}
-                {content}
+                {setContent(process, () => View({char, onCharSelected}))}
             </div>
             <div className="random-char__try">
                 <img className="random-char__try__hammer" src={hammer} alt="hammer" />

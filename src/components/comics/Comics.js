@@ -8,13 +8,28 @@ import ComicsBanner from '../ComicsBanner/ComicsBanner'
 import './comics.scss'
 import '../../style/buttons.scss'
 
+const setContent = (process, Component, newItemLoading) => {
+    switch (process) {
+        case 'waiting':
+            return <Spinner />
+        case 'loading': 
+            return newItemLoading ? <Component/> : <Spinner />
+        case 'confirmed': 
+            return <Component />
+        case 'error': 
+            return <ErrorMessage />
+        default:
+            throw new Error('Unexpected process state');
+    }
+}
+
 const Comics = () => {
     const [comics, setComics] = useState([])
     const [newItemLoading, setNewItemLoading] = useState(false)
     const [offset, setOffset] = useState(0)
     const [ended, setEnded] = useState(false)
     
-    const {getAllComics, clearError, error, loading} = useService()
+    const {getAllComics, clearError, error, loading, process, setProcess} = useService()
 
     useEffect(() => {
         onRequest(true)
@@ -24,6 +39,7 @@ const Comics = () => {
         initial ? setNewItemLoading(false) : setNewItemLoading(true)
         getAllComics(offset)
             .then(newComics => onComicsesLoaded(newComics))
+            .then(() => setProcess('confirmed'))
 
         setOffset(prev => prev + 8)
     }
@@ -45,7 +61,7 @@ const Comics = () => {
     }
 
     const comicsList = (comics) => {
-        return comics.map(({id, img, title, price}, index) => {
+        const newComicsList = comics.map(({id, img, title, price}, index) => {
             return (
                 <li className='list__item'
                     key={index}>
@@ -57,6 +73,12 @@ const Comics = () => {
                 </li>
             )
         })
+
+        return (
+            <ul className='list'>
+                {newComicsList}
+            </ul>
+        )
     }
 
     const errorMsg = error ? <ErrorMessage /> : null
@@ -65,15 +87,7 @@ const Comics = () => {
     return (
         <section className='comics'>
             <ComicsBanner />
-            {errorMsg}
-
-            {loading && !newItemLoading ?
-             <Spinner /> : 
-            <ul className='list'>
-                {comicsList(comics)}
-            </ul> }
-            {spiner}
-
+            {setContent(process, () => comicsList(comics), newItemLoading)}
             <button 
                 disabled={newItemLoading}
                 style={{'display': ended ? 'none' : 'block'}}

@@ -7,6 +7,21 @@ import './characters.scss'
 import '../../style/buttons.scss'
 import ErrorMessage from '../errorMessage/ErrorMessage'
 
+const setContent = (process, Component, newItemLoading) => {
+    switch (process) {
+        case 'waiting':
+            return <Spinner />
+        case 'loading': 
+            return newItemLoading ? <Component/> : <Spinner />
+        case 'confirmed': 
+            return <Component />
+        case 'error': 
+            return <ErrorMessage />
+        default:
+            throw new Error('Unexpected process state');
+    }
+}
+
 const Characters = ({onCharSelected}) => {
 
     const [characters, setCharacters] = useState([])
@@ -14,7 +29,7 @@ const Characters = ({onCharSelected}) => {
     const [offset, setOffset] = useState(210)
     const [charEnded, setCharEnded] = useState(false)
 
-    const {loading, error, getAllChracters } = useService()
+    const {getAllChracters, process, setProcess } = useService()
 
     const itemRefs = useRef([])
 
@@ -45,6 +60,7 @@ const Characters = ({onCharSelected}) => {
         initial ? setNewItemLoading(false) : setNewItemLoading(true)  
         getAllChracters(offset)
             .then(onCharAllLoaded)
+            .then(() => setProcess('confirmed'))
     }
 
     // loadCharByScroll = () => {
@@ -88,20 +104,20 @@ const Characters = ({onCharSelected}) => {
                 </li>
             )
         })
-        return elements
+        return (
+            <ul className='characters'>
+                {elements}
+            </ul>
+        )
     }
 
-    const items = showCharacters()
-    const errorMsg = error ? <ErrorMessage /> : null
-    const spinner = loading && !newItemLoading ? <Spinner /> : null
+    // const items = showCharacters()
+    // const errorMsg = error ? <ErrorMessage /> : null
+    // const spinner = loading && !newItemLoading ? <Spinner /> : null
 
     return (
         <div className='wrapper'>
-            {spinner}
-            {errorMsg}
-            <ul className='characters'>
-                {items}
-            </ul>
+            {setContent(process, () => showCharacters(), newItemLoading )}
             <button 
                 disabled={newItemLoading}
                 onClick={() => onRequest(offset)}
